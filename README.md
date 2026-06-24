@@ -76,18 +76,12 @@ To complete the quality assurance, the following prompts were utilized.
 
 <ins>Gemini Answer Using Translation From Google was used</ins>
 
-### **🫸 ISOLATION:**
+### **🔐 ISOLATION:**
 *Prompt: Based on your previous analysis, pinpoint the exact engineering logic error and identify any specific ISO/IEC standard violations. List these specific errors in a maximum of 5 concise bullet points. Then, provide the necessary engineering corrections to resolve these hazards and ensure compliance, also formatted as a maximum of 5 concise bullet points.*
 
 <ins>Gemini analysis from most precise answer was utilized </ins>
 
 ---
-## 🛠 Engineering Corrections for Compliance
-* **Implement Safety-Rated Monitored Speed (SLS):** Integrate a dual-channel Safety-Rated Monitored Speed function mapped to the T1 mode switch. This must hardware-clamp the TCP speed to ≤ 250mm/s using safety encoders to comply with ISO 10218-1.
-* **Redesign to Stop Category 1 (SS1):** Reconfigure the emergency stop logic to a controlled Category 1 stop according to ISO 13850. The servo drives must actively use regenerative dynamic braking to bring the manipulator to a controlled, rapid stop before the mechanical brakes engage and power is cut.
-* **Upgrade to a Safety-PLC with Cross-Monitoring:** Replace the decentralized relays with a centralized, dual-channel Safety PLC or a safety-certified network master. Ensure all safety-critical inputs (E-stops, enabling switches) and outputs (primary contactors) utilize a feedback loop for dynamic cross-monitoring to achieve PLd/PLe compliance per ISO 13849-1.
-* **Deploy FailSafe over EtherCAT (FSoE):** Implement the FSoE (IEC 61784-3-3) protocol for the handheld operating device. Configure an FSoE watchdog timer limit of ≤ 10ms; if a frame is missed or the cable is cut, the master immediately triggers a safe state transition before communication falls out.
-
 
 ## 🚩Initial Safety Flag
 * **Critical ISO 10218-1 Non-Compliance (T1 Speed Limit):** The procedure does not state that the TCP speed is hardware-clamped to ≤ 250mm/s during T1 manual teach mode. Allowing the manipulator to potentially move at its 1.5 m/s production speed while a human operator is in the envelope is a severe safety violation.
@@ -115,7 +109,7 @@ Apart from this, through further AI assisted analysis, the following ISO/IEC vio
 
 ---
 
-## 🛠️Engineering Corrections for Compliance
+## 🛠️ Engineering Corrections for Compliance
 * **Implement Safety-Rated Monitored Speed (SLS):** Integrate a dual-channel Safety-Rated Monitored Speed function mapped to the T1 mode switch. This must hardware-clamp the TCP speed to ≤ 250mm/s using safety encoders to comply with ISO 10218-1.
 * **Redesign to Stop Category 1 (SS1):** Reconfigure the emergency stop logic to a controlled Category 1 stop according to ISO 13850. The servo drives must actively use regenerative dynamic braking to bring the manipulator to a controlled, rapid stop before the mechanical brakes engage and power is cut.
 * **Upgrade to a Safety-PLC with Cross-Monitoring:** Replace the decentralized relays with a centralized, dual-channel Safety PLC or a safety-certified network master. Ensure all safety-critical inputs (E-stops, enabling switches) and outputs (primary contactors) utilize a feedback loop for dynamic cross-monitoring to achieve PLd/PLe compliance per ISO 13849-1.
