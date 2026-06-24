@@ -65,7 +65,7 @@ German industrial automation standards demand that component failures cause imme
 
 ---
 
-# 🔍 Audit Findings
+<h2 align="center"># 🔍 Audit Findings</h2>
 
 To complete the quality assurance, the following prompts were utilized.
 
