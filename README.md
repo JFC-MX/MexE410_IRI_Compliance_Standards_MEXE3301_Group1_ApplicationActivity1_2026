@@ -47,6 +47,15 @@ Apart from this, through further AI assisted analysis, the following ISO/IEC vio
 
 ---
 
+## 🤔 ISO/IEC Codes
+Here are brief, concise definitions of the stated standards to provide context for the audit:
+* **ISO 10218-1 & -2 (Robots and Robotic Devices):** The definitive safety standards for industrial robots (-1) and integrated robot systems (-2). They dictate mandatory safeguards, including the maximum allowable speed of ≤ 250mm/s for human-robot interaction in manual/teach modes.
+* **ISO 13850 (Safety of Machinery — Emergency Stop):** Establishes the functional requirements and design principles for emergency stop functions. It defines **Stop Category 0** (immediate, uncontrolled removal of power) and **Stop Category 1** (controlled deceleration with power sustained until the machine stops).
+* **ISO 13849-1 (Safety-Related Parts of Control Systems):** Provides safety requirements for designing and integrating safety-related control systems. It assesses reliability using **Performance Levels (PL a to e)** based on system architecture, fault tolerance, and diagnostic coverage.
+* **IEC 61784-3-3 (Industrial Communication Networks — Functional Safety Fieldbuses):** Part of the international standard defining safe communication layers over standard networks. It outlines the protocols—such as **FailSafe over EtherCAT (FSoE)**—required to detect communication errors, corruption, or hardware cuts within fieldbuses.
+
+---
+
 ## 🛠️:Engineering Corrections for Compliance
 * **Implement Safety-Rated Monitored Speed (SLS):** Integrate a dual-channel Safety-Rated Monitored Speed function mapped to the T1 mode switch. This must hardware-clamp the TCP speed to ≤ 250mm/s using safety encoders to comply with ISO 10218-1.
 * **Redesign to Stop Category 1 (SS1):** Reconfigure the emergency stop logic to a controlled Category 1 stop according to ISO 13850. The servo drives must actively use regenerative dynamic braking to bring the manipulator to a controlled, rapid stop before the mechanical brakes engage and power is cut.
