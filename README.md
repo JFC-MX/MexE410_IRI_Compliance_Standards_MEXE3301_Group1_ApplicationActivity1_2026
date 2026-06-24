@@ -65,12 +65,15 @@ German industrial automation standards demand that component failures cause imme
 
 ---
 
-## 🔍 Audit Findings
 
-# INTERROGATION:
+
+# 🔍 Audit Findings
+
+## **INTERROGATION:**
 *Prompt: Act as a Mechatronics QA Auditor. Analyze this translated procedure. Does the mechanical logic ensure physical safety and comply with ISO standards? Flag any relay states, kinematic bounds, or thermal limits that could cause a catastrophic failure. Present your findings in a maximum of 5 concise bullet points.*
 
-<u>Gemini Answer Using Translation From Google:</u>
+<ins>Gemini Answer Using Translation From Google:</ins>
+
 ## Mechatronics QA Audit Report
 * **Critical ISO 10218-1 Non-Compliance (T1 Speed Limit):** The procedure does not state that the TCP speed is hardware-clamped to ≤ 250mm/s during T1 manual teach mode. Allowing the manipulator to potentially move at its 1.5 m/s production speed while a human operator is in the envelope is a severe safety violation.
 * **Thermal Brake Overload & Catastrophic Shear (ISO 13850):** Implementing an uncontrolled Category 0 stop (immediate de-energization) at a high TCP speed of 1.5 m/s on a heavy industrial manipulator will violently abuse the mechanical brakes. The massive kinetic energy will likely exceed their thermal and shear limits, causing brake fade, structural distortion, or mechanical failure. A controlled Category 1 stop is required.
@@ -78,10 +81,10 @@ German industrial automation standards demand that component failures cause imme
 * **Architecture Integrity Risk (ISO 13849-1):** Wiring primary contactors as Normally Open (NO) is standard, but relying on "decentralized" hardware safety relays lacks the required rigor for industrial robotics. To meet PLd/PLe requirements, the system must utilize dual-channel safety relays with cross-monitoring; otherwise, a single welded relay contact will defeat the entire E-stop chain.
 * **EtherCAT Communication Watchdog Gap:** Relying purely on physical circuit interruption for a cut communication cable ignores digital fieldbus realities. If the handheld device loses connection, the EtherCAT master must enforce a strict watchdog timeout (typically < 10ms) to transition the state machine to a safe state, preventing the robot from executing a "frozen" last-commanded trajectory before the mechanical relay drops out.
 
-#ISOLATION:
+## **ISOLATION:**
 *Prompt: Based on your previous analysis, pinpoint the exact engineering logic error and identify any specific ISO/IEC standard violations. List these specific errors in a maximum of 5 concise bullet points. Then, provide the necessary engineering corrections to resolve these hazards and ensure compliance, also formatted as a maximum of 5 concise bullet points.*
 
-<u>Gemini ANALYSIS FROM MOST PRECISE ANSWER:</u>
+<ins>Gemini ANALYSIS FROM MOST PRECISE ANSWER: </ins>
 
 ## Engineering Logic Errors & ISO/IEC Violations
 * **ISO 10218-1 & ISO 10218-2 Violation (T1 Speed Cap):** The engineering logic relies entirely on software override for T1 mode without enforcing a hard, safety-rated speed limit. In manual mode, the TCP speed must be strictly restricted to ≤ 250mm/s via safety-rated monitored speed circuits.
