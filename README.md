@@ -30,20 +30,13 @@ However, while stylistic variations are acceptable in technical documentation, s
 
 ---
 
-## 💀Fatal Flaw & ISO/IEC Violations
+## 💀Fatal Flaw 
 | Original English (Paragraph 3) | Raw Translation (Paragraph 3) |
 |:---|:---|
 | To guarantee a fail-safe state during an emergency stop or power failure, the primary contactors governing the servomotors must be wired in a **[normally closed](#)** configuration. If facility power is lost or the teach pendant communication cable is severed, the circuit physically breaks, instantly dumping all servomotor power and locking the mechanical brakes to prevent fatal crushing injuries. | To guarantee a fail-safe state in the event of an emergency stop or power failure, the primary contactors for controlling the servo motors must be wired in a **[normally open](#)** configuration. If the plant's mains power fails or the handheld operating device's communication cable is cut, the circuit is physically interrupted, immediately de-energizing the servo motors and engaging the mechanical brakes to prevent fatal crush injuries. |
 
 The simple inversion of a word from an "open" to a "close" at first glance may be an innocent mistake, however this change alone would produce such drastic consequences down the line in the device's operation, especially in scenarios that concern the safety of not just the plant, but the lives of the workers. 
 
-Apart from this, through further AI assisted analysis, the following ISO/IEC violations were also isolated.
-
-* **ISO 10218-1 & ISO 10218-2 Violation (T1 Speed Cap):** The engineering logic relies entirely on software override for T1 mode without enforcing a hard, safety-rated speed limit. In manual mode, the TCP speed must be strictly restricted to ≤ 250mm/s via safety-rated monitored speed circuits.
-* **ISO 13850 Violation (Emergency Stop Category):** The system mandates an immediate Category 0 stop (uncontrolled cut of power) at a high production speed of 1.5 m/s. This represents a thermal and mechanical logic error: the instant engagement of mechanical brakes at peak kinetic energy can exceed their thermal/shear limits, causing brake fade, structural damage, and extended stopping distances.
-* **ISO 13849-1 Violation (Performance Level/Architecture):** The logic assumes "decentralized hardware safety relays" provide sufficient safety coverage. For a heavy industrial manipulator, the architecture must achieve Performance Level d or e (PLd/PLe), Category 3 or 4, which strictly requires dual-channel redundancy and continuous cross-monitoring to prevent single-point hardware failure (e.g., a welded relay contact).
-* **IEC 61784-3-3 Violation (Fieldbus Watchdog Failure):** The logic falsely assumes a physical cable cut on an EtherCAT network immediately drops the safety loop cleanly. Without explicit, safety-rated communication protocols (FSoE) and strict watchdog timeout limits, a network disruption can cause a state-machine lockup, temporarily freezing the manipulator in motion.
-* **Mathematical Kinematic Bound Error:** Using a fixed damping factor (lambda = 0.01) in the pseudoinverse Jacobian logic is structurally flawed. Near deep kinematic singularities, a static factor cannot dynamically bound the joint velocities, leading to mathematical saturation that triggers violent, uncommanded joint acceleration.
 
 ---
 
@@ -51,23 +44,6 @@ Apart from this, through further AI assisted analysis, the following ISO/IEC vio
 By simply inverting. the "normally closed" to a "normally open" the entire manufacturing machine is compromised. In an industry of automation, the safety architecture relies on the principle of de-energization, where a continuously energized circuit is de-energized with the press of an emergency stop button. This would break the control circuit forcing the heavy-duty machine to isolate the power running into the servomotor. 
 
 However, if a field technician wires the contactors as per the manual, initiating the emergency stop button would fail to trip the de-energization. The control circuit would stay in operation, and the heavy-duty 6-DOF manipulator would continue its trajectory completely blind to the safety override. This directly can result in a catastrophic collision with other equipment, and personnel which could lead to potential fatal injuries and harsh hardware damages.
-
----
-## 🤔 ISO/IEC Codes
-Here are brief, concise definitions of the stated standards to provide context for the audit:
-* **ISO 10218-1 & -2 (Robots and Robotic Devices):** The definitive safety standards for industrial robots (-1) and integrated robot systems (-2). They dictate mandatory safeguards, including the maximum allowable speed of ≤ 250mm/s for human-robot interaction in manual/teach modes.
-* **ISO 13850 (Safety of Machinery — Emergency Stop):** Establishes the functional requirements and design principles for emergency stop functions. It defines **Stop Category 0** (immediate, uncontrolled removal of power) and **Stop Category 1** (controlled deceleration with power sustained until the machine stops).
-* **ISO 13849-1 (Safety-Related Parts of Control Systems):** Provides safety requirements for designing and integrating safety-related control systems. It assesses reliability using **Performance Levels (PL a to e)** based on system architecture, fault tolerance, and diagnostic coverage.
-* **IEC 61784-3-3 (Industrial Communication Networks — Functional Safety Fieldbuses):** Part of the international standard defining safe communication layers over standard networks. It outlines the protocols—such as **FailSafe over EtherCAT (FSoE)**—required to detect communication errors, corruption, or hardware cuts within fieldbuses.
-
----
-
-## 🛠️Engineering Corrections for Compliance
-* **Implement Safety-Rated Monitored Speed (SLS):** Integrate a dual-channel Safety-Rated Monitored Speed function mapped to the T1 mode switch. This must hardware-clamp the TCP speed to ≤ 250mm/s using safety encoders to comply with ISO 10218-1.
-* **Redesign to Stop Category 1 (SS1):** Reconfigure the emergency stop logic to a controlled Category 1 stop according to ISO 13850. The servo drives must actively use regenerative dynamic braking to bring the manipulator to a controlled, rapid stop before the mechanical brakes engage and power is cut.
-* **Upgrade to a Safety-PLC with Cross-Monitoring:** Replace the decentralized relays with a centralized, dual-channel Safety PLC or a safety-certified network master. Ensure all safety-critical inputs (E-stops, enabling switches) and outputs (primary contactors) utilize a feedback loop for dynamic cross-monitoring to achieve PLd/PLe compliance per ISO 13849-1.
-* **Deploy FailSafe over EtherCAT (FSoE):** Implement the FSoE (IEC 61784-3-3) protocol for the handheld operating device. Configure an FSoE watchdog timer limit of ≤ 10ms; if a frame is missed or the cable is cut, the master immediately triggers a safe state transition before communication falls out.
-* **Upgrade to an Adaptive Singularity Damping Algorithm:** Replace the static damping factor with a dynamic Levenberg-Marquardt tracking algorithm. The damping factor must adjust dynamically based on the manipulability measure (w), ensuring that lambda increases proportionally as the manipulator approaches a singularity boundary:
 
 ---
 
@@ -85,6 +61,32 @@ In the original German draft, using the word "Schließer-Konfiguration" creates 
 Correcting the phrasing to "normalerweise geschlossenen Konfiguration" (or natively using the engineering standard term Öffner-Kontakt) ensures that the text perfectly communicates the physical reality of a loop that must remain unbroken to keep the system active.
 
 German industrial automation standards demand that component failures cause immediate safe-states. Translating these documents requires recognizing that a single slip between Schließer and Öffner is the equivalent of designing a critical system error right into the user manual.
+
+
+---
+## 🤔 ISO/IEC Codes and Violations
+Here are brief, concise definitions of the stated standards to provide context for the audit:
+* **ISO 10218-1 & -2 (Robots and Robotic Devices):** The definitive safety standards for industrial robots (-1) and integrated robot systems (-2). They dictate mandatory safeguards, including the maximum allowable speed of ≤ 250mm/s for human-robot interaction in manual/teach modes.
+* **ISO 13850 (Safety of Machinery — Emergency Stop):** Establishes the functional requirements and design principles for emergency stop functions. It defines **Stop Category 0** (immediate, uncontrolled removal of power) and **Stop Category 1** (controlled deceleration with power sustained until the machine stops).
+* **ISO 13849-1 (Safety-Related Parts of Control Systems):** Provides safety requirements for designing and integrating safety-related control systems. It assesses reliability using **Performance Levels (PL a to e)** based on system architecture, fault tolerance, and diagnostic coverage.
+* **IEC 61784-3-3 (Industrial Communication Networks — Functional Safety Fieldbuses):** Part of the international standard defining safe communication layers over standard networks. It outlines the protocols—such as **FailSafe over EtherCAT (FSoE)**—required to detect communication errors, corruption, or hardware cuts within fieldbuses.
+
+Apart from this, through further AI assisted analysis, the following ISO/IEC violations were also isolated.
+
+* **ISO 10218-1 & ISO 10218-2 Violation (T1 Speed Cap):** The engineering logic relies entirely on software override for T1 mode without enforcing a hard, safety-rated speed limit. In manual mode, the TCP speed must be strictly restricted to ≤ 250mm/s via safety-rated monitored speed circuits.
+* **ISO 13850 Violation (Emergency Stop Category):** The system mandates an immediate Category 0 stop (uncontrolled cut of power) at a high production speed of 1.5 m/s. This represents a thermal and mechanical logic error: the instant engagement of mechanical brakes at peak kinetic energy can exceed their thermal/shear limits, causing brake fade, structural damage, and extended stopping distances.
+* **ISO 13849-1 Violation (Performance Level/Architecture):** The logic assumes "decentralized hardware safety relays" provide sufficient safety coverage. For a heavy industrial manipulator, the architecture must achieve Performance Level d or e (PLd/PLe), Category 3 or 4, which strictly requires dual-channel redundancy and continuous cross-monitoring to prevent single-point hardware failure (e.g., a welded relay contact).
+* **IEC 61784-3-3 Violation (Fieldbus Watchdog Failure):** The logic falsely assumes a physical cable cut on an EtherCAT network immediately drops the safety loop cleanly. Without explicit, safety-rated communication protocols (FSoE) and strict watchdog timeout limits, a network disruption can cause a state-machine lockup, temporarily freezing the manipulator in motion.
+* **Mathematical Kinematic Bound Error:** Using a fixed damping factor (lambda = 0.01) in the pseudoinverse Jacobian logic is structurally flawed. Near deep kinematic singularities, a static factor cannot dynamically bound the joint velocities, leading to mathematical saturation that triggers violent, uncommanded joint acceleration.
+
+---
+
+## 🛠️Engineering Corrections for Compliance
+* **Implement Safety-Rated Monitored Speed (SLS):** Integrate a dual-channel Safety-Rated Monitored Speed function mapped to the T1 mode switch. This must hardware-clamp the TCP speed to ≤ 250mm/s using safety encoders to comply with ISO 10218-1.
+* **Redesign to Stop Category 1 (SS1):** Reconfigure the emergency stop logic to a controlled Category 1 stop according to ISO 13850. The servo drives must actively use regenerative dynamic braking to bring the manipulator to a controlled, rapid stop before the mechanical brakes engage and power is cut.
+* **Upgrade to a Safety-PLC with Cross-Monitoring:** Replace the decentralized relays with a centralized, dual-channel Safety PLC or a safety-certified network master. Ensure all safety-critical inputs (E-stops, enabling switches) and outputs (primary contactors) utilize a feedback loop for dynamic cross-monitoring to achieve PLd/PLe compliance per ISO 13849-1.
+* **Deploy FailSafe over EtherCAT (FSoE):** Implement the FSoE (IEC 61784-3-3) protocol for the handheld operating device. Configure an FSoE watchdog timer limit of ≤ 10ms; if a frame is missed or the cable is cut, the master immediately triggers a safe state transition before communication falls out.
+* **Upgrade to an Adaptive Singularity Damping Algorithm:** Replace the static damping factor with a dynamic Levenberg-Marquardt tracking algorithm. The damping factor must adjust dynamically based on the manipulability measure (w), ensuring that lambda increases proportionally as the manipulator approaches a singularity boundary:
 
 ---
 
