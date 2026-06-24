@@ -3,7 +3,7 @@
 
 ---
 
-## 🎯 Target Language - Deutsch :beer: (German)
+## 🎯 Target Language - Deutsch 🍻 (German)
 
 Germany stands as one of the premier engineering hubs of the world, renowned for pioneering "Industry 4.0" and setting global benchmarks in industrial automation and functional safety. However, when cutting-edge technology is deployed globally, the hardware is only as safe as the documentation accompanying it. This makes precise technical translation a critical component of international engineering.
 
@@ -35,12 +35,21 @@ However, while stylistic variations are acceptable in technical documentation, s
 |:---|:---|
 | To guarantee a fail-safe state during an emergency stop or power failure, the primary contactors governing the servomotors must be wired in a **[normally closed](#)** configuration. If facility power is lost or the teach pendant communication cable is severed, the circuit physically breaks, instantly dumping all servomotor power and locking the mechanical brakes to prevent fatal crushing injuries. | To guarantee a fail-safe state in the event of an emergency stop or power failure, the primary contactors for controlling the servo motors must be wired in a **[normally open](#)** configuration. If the plant's mains power fails or the handheld operating device's communication cable is cut, the circuit is physically interrupted, immediately de-energizing the servo motors and engaging the mechanical brakes to prevent fatal crush injuries. |
 
-The simple inversion of a word from an "open" to a "close" at first glance may be an innocent mistake, however this change alone would produce such drastic consequences down the line in the device's operation, especially in scenarios that concern the safety of not just the plant, but the lives of the workers. Apart from this, through further AI assisted analysis, the following ISO/IEC violations were also isolated.
+The simple inversion of a word from an "open" to a "close" at first glance may be an innocent mistake, however this change alone would produce such drastic consequences down the line in the device's operation, especially in scenarios that concern the safety of not just the plant, but the lives of the workers. 
+
+Apart from this, through further AI assisted analysis, the following ISO/IEC violations were also isolated.
 
 * **ISO 10218-1 & ISO 10218-2 Violation (T1 Speed Cap):** The engineering logic relies entirely on software override for T1 mode without enforcing a hard, safety-rated speed limit. In manual mode, the TCP speed must be strictly restricted to ≤ 250mm/s via safety-rated monitored speed circuits.
 * **ISO 13850 Violation (Emergency Stop Category):** The system mandates an immediate Category 0 stop (uncontrolled cut of power) at a high production speed of 1.5 m/s. This represents a thermal and mechanical logic error: the instant engagement of mechanical brakes at peak kinetic energy can exceed their thermal/shear limits, causing brake fade, structural damage, and extended stopping distances.
 * **ISO 13849-1 Violation (Performance Level/Architecture):** The logic assumes "decentralized hardware safety relays" provide sufficient safety coverage. For a heavy industrial manipulator, the architecture must achieve Performance Level d or e (PLd/PLe), Category 3 or 4, which strictly requires dual-channel redundancy and continuous cross-monitoring to prevent single-point hardware failure (e.g., a welded relay contact).
 * **IEC 61784-3-3 Violation (Fieldbus Watchdog Failure):** The logic falsely assumes a physical cable cut on an EtherCAT network immediately drops the safety loop cleanly. Without explicit, safety-rated communication protocols (FSoE) and strict watchdog timeout limits, a network disruption can cause a state-machine lockup, temporarily freezing the manipulator in motion.
 * **Mathematical Kinematic Bound Error:** Using a fixed damping factor (lambda = 0.01) in the pseudoinverse Jacobian logic is structurally flawed. Near deep kinematic singularities, a static factor cannot dynamically bound the joint velocities, leading to mathematical saturation that triggers violent, uncommanded joint acceleration.
+
 ---
 
+## 🛠️:Engineering Corrections for Compliance
+* **Implement Safety-Rated Monitored Speed (SLS):** Integrate a dual-channel Safety-Rated Monitored Speed function mapped to the T1 mode switch. This must hardware-clamp the TCP speed to ≤ 250mm/s using safety encoders to comply with ISO 10218-1.
+* **Redesign to Stop Category 1 (SS1):** Reconfigure the emergency stop logic to a controlled Category 1 stop according to ISO 13850. The servo drives must actively use regenerative dynamic braking to bring the manipulator to a controlled, rapid stop before the mechanical brakes engage and power is cut.
+* **Upgrade to a Safety-PLC with Cross-Monitoring:** Replace the decentralized relays with a centralized, dual-channel Safety PLC or a safety-certified network master. Ensure all safety-critical inputs (E-stops, enabling switches) and outputs (primary contactors) utilize a feedback loop for dynamic cross-monitoring to achieve PLd/PLe compliance per ISO 13849-1.
+* **Deploy FailSafe over EtherCAT (FSoE):** Implement the FSoE (IEC 61784-3-3) protocol for the handheld operating device. Configure an FSoE watchdog timer limit of ≤ 10ms; if a frame is missed or the cable is cut, the master immediately triggers a safe state transition before communication falls out.
+* **Upgrade to an Adaptive Singularity Damping Algorithm:** Replace the static damping factor with a dynamic Levenberg-Marquardt tracking algorithm. The damping factor must adjust dynamically based on the manipulability measure (w), ensuring that lambda increases proportionally as the manipulator approaches a singularity boundary:
