@@ -1,5 +1,5 @@
 <h1 align="center">MEXE 410 Activity 1 - Industrial Robotics & International Compliance Standards (ISO/IEC)</h1>
-<h2 align="center">MEXE 3301 Group #1 Heavy Manufacturing 6-DOF Welding Manipulator</h2>
+<h2 align="center">MEXE 3301 Group #1: Heavy Manufacturing 6-DOF Welding Manipulator</h2>
 
 ## 🎯 Target Language - Deutsch :beer: (German)
 | Original English | Original Deutsch |
