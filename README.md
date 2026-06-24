@@ -47,6 +47,12 @@ Apart from this, through further AI assisted analysis, the following ISO/IEC vio
 
 ---
 
+## 👷🏻‍♂️ The Engineering Consequence
+By simply inverting. the "normally closed" to a "normally open" the entire manufacturing machine is compromised. In an industry of automation, the safety architecture relies on the principle of de-energization, where a continuously energized circuit is de-energized with the press of an emergency stop button. This would break the control circuit forcing the heavy-duty machine to isolate the power running into the servomotor. 
+
+However, if a field technician wires the contactors as per the manual, initiating the emergency stop button would fail to trip the de-energization. The control circuit would stay in operation, and the heavy-duty 6-DOF manipulator would continue its trajectory completely blind to the safety override. This directly can result in a catastrophic collision with other equipment, and personnel which could lead to potential fatal injuries and harsh hardware damages.
+
+---
 ## 🤔 ISO/IEC Codes
 Here are brief, concise definitions of the stated standards to provide context for the audit:
 * **ISO 10218-1 & -2 (Robots and Robotic Devices):** The definitive safety standards for industrial robots (-1) and integrated robot systems (-2). They dictate mandatory safeguards, including the maximum allowable speed of ≤ 250mm/s for human-robot interaction in manual/teach modes.
