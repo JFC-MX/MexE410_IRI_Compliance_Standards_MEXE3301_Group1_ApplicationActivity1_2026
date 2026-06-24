@@ -82,6 +82,6 @@ German industrial automation standards demand that component failures cause imme
 
 ---
 
-##Conclusion
+## Conclusion
 
 (dito lagay conclusion)
