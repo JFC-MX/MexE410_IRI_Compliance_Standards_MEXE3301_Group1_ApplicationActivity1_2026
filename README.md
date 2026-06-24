@@ -65,8 +65,6 @@ German industrial automation standards demand that component failures cause imme
 
 ---
 
-
-
 # 🔍 Audit Findings
 
 To complete the quality assurance, the following prompts were utilized.
@@ -99,7 +97,7 @@ Here are brief, concise definitions of the stated standards to provide context f
 * **ISO 13849-1 (Safety-Related Parts of Control Systems):** Provides safety requirements for designing and integrating safety-related control systems. It assesses reliability using **Performance Levels (PL a to e)** based on system architecture, fault tolerance, and diagnostic coverage.
 * **IEC 61784-3-3 (Industrial Communication Networks — Functional Safety Fieldbuses):** Part of the international standard defining safe communication layers over standard networks. It outlines the protocols—such as **FailSafe over EtherCAT (FSoE)**—required to detect communication errors, corruption, or hardware cuts within fieldbuses.
 
-Apart from this, through further AI assisted analysis, the following ISO/IEC violations were also isolated.
+Apart from this, through further AI assisted analysis, the following ISO/IEC violations were also **isolated.**
 
 * **ISO 10218-1 & ISO 10218-2 Violation (T1 Speed Cap):** The engineering logic relies entirely on software override for T1 mode without enforcing a hard, safety-rated speed limit. In manual mode, the TCP speed must be strictly restricted to ≤ 250mm/s via safety-rated monitored speed circuits.
 * **ISO 13850 Violation (Emergency Stop Category):** The system mandates an immediate Category 0 stop (uncontrolled cut of power) at a high production speed of 1.5 m/s. This represents a thermal and mechanical logic error: the instant engagement of mechanical brakes at peak kinetic energy can exceed their thermal/shear limits, causing brake fade, structural damage, and extended stopping distances.
