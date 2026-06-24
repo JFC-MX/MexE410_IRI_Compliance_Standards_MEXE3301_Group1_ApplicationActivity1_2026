@@ -3,7 +3,7 @@
 
 ---
 
-## 🎯 Target Language - Deutsch 🍻 (German)
+## 🎯Target Language - Deutsch 🍻 (German)
 
 Germany stands as one of the premier engineering hubs of the world, renowned for pioneering "Industry 4.0" and setting global benchmarks in industrial automation and functional safety. However, when cutting-edge technology is deployed globally, the hardware is only as safe as the documentation accompanying it. This makes precise technical translation a critical component of international engineering.
 
@@ -19,7 +19,7 @@ The table below shows such example in which an original english text is compared
 
 ---
 
-## :meat_on_bone: Raw Translation
+## :meat_on_bone:Raw Translation
 | Original English | Raw Translation |
 |:---|:---|
 | The industrial 6-DOF welding manipulator utilizes a decentralized control architecture with EtherCAT communication operating at a strict 1 kHz cycle time. The trajectory planning module relies on a 6th-order polynomial for joint-space interpolation, ensuring jerk-limited motion profiles. To maintain differential consistency during singularity avoidance, the pseudo-inverse Jacobian matrix applies a dynamic damping factor of $\lambda = 0.01$, allowing seamless transitions between complex spatial configurations.<br><br>During standard automated manufacturing cycles, the Tool Center Point (TCP) velocity is strictly maintained at 1.5 m/s to optimize throughput and weld bead consistency. However, the system requires periodic human-robot collaboration for pathway recalibration. When the controller is switched to T1 Manual Teach Mode via the operator’s pendant, localized hardware safety relays engage immediately, bypassing all automated software trajectories to prioritize biological safety.<br><br>To guarantee a fail-safe state during an emergency stop or power failure, the primary contactors governing the servomotors must be wired in a ***normally closed*** configuration. If facility power is lost or the teach pendant communication cable is severed, the circuit physically breaks, instantly dumping all servomotor power and locking the mechanical brakes to prevent fatal crushing injuries. | The industrial 6-DOF welding manipulator uses a decentralized control architecture with EtherCAT communication operating at a strict 1 kHz cycle time. The path planning module relies on a 6th-degree polynomial for joint space interpolation, ensuring jerk-limited motion profiles. To maintain differential consistency while avoiding singularities, the pseudoinverse Jacobian matrix applies a dynamic damping factor of $\lambda = 0.01$, enabling seamless transitions between complex spatial configurations.<br><br>During standard automated production cycles, the speed of the tool center point (TCP) is strictly controlled to 1.5 m/s to optimize throughput and weld consistency. However, the system requires regular human-robot collaboration for path recalibration. When the control is switched to T1 manual operation (teach mode) via the handheld operating device, decentralized hardware safety relays immediately activate, overriding all automated software trajectories to give absolute priority to biological safety.<br><br>To guarantee a fail-safe state in the event of an emergency stop or power failure, the primary contactors for controlling the servo motors must be wired in a ***normally open*** configuration. If the plant's mains power fails or the handheld operating device's communication cable is cut, the circuit is physically interrupted, immediately de-energizing the servo motors and engaging the mechanical brakes to prevent fatal crush injuries. |
@@ -30,7 +30,7 @@ However, while stylistic variations are acceptable in technical documentation, s
 
 ---
 
-## 💀 Fatal Flaw & ISO/IEC Violations
+## 💀Fatal Flaw & ISO/IEC Violations
 | Original English (Paragraph 3) | Raw Translation (Paragraph 3) |
 |:---|:---|
 | To guarantee a fail-safe state during an emergency stop or power failure, the primary contactors governing the servomotors must be wired in a **[normally closed](#)** configuration. If facility power is lost or the teach pendant communication cable is severed, the circuit physically breaks, instantly dumping all servomotor power and locking the mechanical brakes to prevent fatal crushing injuries. | To guarantee a fail-safe state in the event of an emergency stop or power failure, the primary contactors for controlling the servo motors must be wired in a **[normally open](#)** configuration. If the plant's mains power fails or the handheld operating device's communication cable is cut, the circuit is physically interrupted, immediately de-energizing the servo motors and engaging the mechanical brakes to prevent fatal crush injuries. |
@@ -56,7 +56,7 @@ Here are brief, concise definitions of the stated standards to provide context f
 
 ---
 
-## 🛠️:Engineering Corrections for Compliance
+## 🛠️Engineering Corrections for Compliance
 * **Implement Safety-Rated Monitored Speed (SLS):** Integrate a dual-channel Safety-Rated Monitored Speed function mapped to the T1 mode switch. This must hardware-clamp the TCP speed to ≤ 250mm/s using safety encoders to comply with ISO 10218-1.
 * **Redesign to Stop Category 1 (SS1):** Reconfigure the emergency stop logic to a controlled Category 1 stop according to ISO 13850. The servo drives must actively use regenerative dynamic braking to bring the manipulator to a controlled, rapid stop before the mechanical brakes engage and power is cut.
 * **Upgrade to a Safety-PLC with Cross-Monitoring:** Replace the decentralized relays with a centralized, dual-channel Safety PLC or a safety-certified network master. Ensure all safety-critical inputs (E-stops, enabling switches) and outputs (primary contactors) utilize a feedback loop for dynamic cross-monitoring to achieve PLd/PLe compliance per ISO 13849-1.
@@ -65,7 +65,7 @@ Here are brief, concise definitions of the stated standards to provide context f
 
 ---
 
-## ✍️ Corrected Code/Text
+## ✍️Corrected Code/Text
 | Original German Draft | Corrected German Text |
 |:---|:---|
 | Der industrielle 6-DOF-Schweißmanipulator verwendet eine dezentrale Steuerungsarchitektur mit einer EtherCAT-Kommunikation, die mit einer strikten Zykluszeit von 1 kHz arbeitet. Das Bahnplanungsmodul stützt sich auf ein Polynom 6. Grades zur Gelenkrauminterpolation, wodurch ruckbegrenzte Bewegungsprofile sichergestellt werden. Um die differentielle Konsistenz bei der Singularitätsvermeidung zu wahren, wendet die pseudoinverse Jacobi-Matrix einen dynamischen Dämpfungsfaktor von $\lambda = 0.01$ an, der nahtlose Übergänge zwischen komplexen räumlichen Konfigurationen ermöglicht.<br><br>Während der standardmäßigen automatisierten Produktionszyklen wird die Geschwindigkeit des Tool Center Point (TCP) streng auf 1,5 m/s geregelt, um den Durchsatz und die Gleichmäßigkeit der Schweißnaht zu optimieren. Das System erfordert jedoch eine regelmäßige Mensch-Roboter-Kollaboration zur Rekalibrierung der Bahnen. Wenn die Steuerung über das Handbediengerät in den T1-Handfahrbetrieb (Teach-Modus) umgeschaltet wird, schalten sofort dezentrale Hardware-Sicherheitsrelais, die alle automatisierten Software-Trajektorien übersteuern, um der biologischen Sicherheit absolute Priorität einzuräumen.<br><br>Um einen fehlersicheren Zustand (Fail-Safe) bei einem Not-Halt oder Stromausfall zu garantieren, müssen die primären Schütze zur Ansteuerung der Servomotoren in einer **[Schließer-Konfiguration](#)** verdrahtet werden. Fällt die Netzspannung der Anlage aus oder wird das Kommunikationskabel des Handbediengeräts durchtrennt, wird der Stromkreis physisch unterbrochen, wodurch die Servomotoren sofort stromlos geschaltet werden und die mechanischen Bremsen einfallen, um tödliche Quetschverletzungen zu verhindern. | Der industrielle 6-DOF-Schweißmanipulator verwendet eine dezentrale Steuerungsarchitektur mit einer EtherCAT-Kommunikation, die mit einer strikten Zykluszeit von 1 kHz arbeitet. Das Bahnplanungsmodul stützt sich auf ein Polynom 6. Grades zur Gelenkrauminterpolation, wodurch ruckbegrenzte Bewegungsprofile sichergestellt werden. Um die differentielle Konsistenz bei der Singularitätsvermeidung zu wahren, wendet die pseudoinverse Jacobi-Matrix einen dynamischen Dämpfungsfaktor von $\lambda = 0.01$ an, der nahtlose Übergänge zwischen komplexen räumlichen Konfigurationen ermöglicht.<br><br>Während der standardmäßigen automatisierten Produktionszyklen wird die Geschwindigkeit des Tool Center Point (TCP) streng auf 1,5 m/s geregelt, um den Durchsatz und die Gleichmäßigkeit der Schweißnaht zu optimieren. Das System erfordert jedoch eine regelmäßige Mensch-Roboter-Kollaboration zur Rekalibrierung der Bahnen. Wenn die Steuerung über das Handbediengerät in den T1-Handfahrbetrieb (Teach-Modus) umgeschaltet wird, schalten sofort dezentrale Hardware-Sicherheitsrelais, die alle automatisierten Software-Trajektorien übersteuern, um der biologischen Sicherheit absolute Priorität einzuräumen.<br><br>Um einen fehlersicheren Zustand (Fail-Safe) bei einem Not-Halt oder Stromausfall zu garantieren, müssen die primären Schütze zur Ansteuerung der Servomotoren in einer **[normalerweise geschlossenen Konfiguration](#)** verdrahtet sein. Fällt die Netzspannung der Anlage aus oder wird das Kommunikationskabel des Handbediengeräts durchtrennt, wird der Stromkreis physisch unterbrochen, wodurch die Servomotoren sofort stromlos geschaltet werden und die mechanischen Bremsen einfallen, um tödliche Quetschverletzungen zu verhindern. |
@@ -80,3 +80,8 @@ Correcting the phrasing to "normalerweise geschlossenen Konfiguration" (or nativ
 
 German industrial automation standards demand that component failures cause immediate safe-states. Translating these documents requires recognizing that a single slip between Schließer and Öffner is the equivalent of designing a critical system error right into the user manual.
 
+---
+
+##Conclusion
+
+(dito lagay conclusion)
