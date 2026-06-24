@@ -30,15 +30,6 @@ However, while stylistic variations are acceptable in technical documentation, s
 
 ---
 
-## 🚩Initial Safety Flag
-* **Critical ISO 10218-1 Non-Compliance (T1 Speed Limit):** The procedure does not state that the TCP speed is hardware-clamped to ≤ 250mm/s during T1 manual teach mode. Allowing the manipulator to potentially move at its 1.5 m/s production speed while a human operator is in the envelope is a severe safety violation.
-* **Thermal Brake Overload & Catastrophic Shear (ISO 13850):** Implementing an uncontrolled Category 0 stop (immediate de-energization) at a high TCP speed of 1.5 m/s on a heavy industrial manipulator will violently abuse the mechanical brakes. The massive kinetic energy will likely exceed their thermal and shear limits, causing brake fade, structural distortion, or mechanical failure. A controlled Category 1 stop is required.
-* **Kinematic Boundary Saturation:** Relying on a fixed damping factor of lambda = 0.01 for the pseudoinverse Jacobian is highly dangerous near deep singularities. If the manipulator approaches a boundary, this arbitrary value can fail to cap joint velocities, causing violent, uncommanded joint acceleration that violates the 6th-degree polynomial jerk limits.
-* **Architecture Integrity Risk (ISO 13849-1):** Wiring primary contactors as Normally Open (NO) is standard, but relying on "decentralized" hardware safety relays lacks the required rigor for industrial robotics. To meet PLd/PLe requirements, the system must utilize dual-channel safety relays with cross-monitoring; otherwise, a single welded relay contact will defeat the entire E-stop chain.
-* **EtherCAT Communication Watchdog Gap:** Relying purely on physical circuit interruption for a cut communication cable ignores digital fieldbus realities. If the handheld device loses connection, the EtherCAT master must enforce a strict watchdog timeout (typically < 10ms) to transition the state machine to a safe state, preventing the robot from executing a "frozen" last-commanded trajectory before the mechanical relay drops out.
-
----
-
 ## 💀Fatal Flaw 
 | Original English (Paragraph 3) | Raw Translation (Paragraph 3) |
 |:---|:---|
@@ -73,6 +64,16 @@ German industrial automation standards demand that component failures cause imme
 
 
 ---
+
+## 🚩Initial Safety Flag
+* **Critical ISO 10218-1 Non-Compliance (T1 Speed Limit):** The procedure does not state that the TCP speed is hardware-clamped to ≤ 250mm/s during T1 manual teach mode. Allowing the manipulator to potentially move at its 1.5 m/s production speed while a human operator is in the envelope is a severe safety violation.
+* **Thermal Brake Overload & Catastrophic Shear (ISO 13850):** Implementing an uncontrolled Category 0 stop (immediate de-energization) at a high TCP speed of 1.5 m/s on a heavy industrial manipulator will violently abuse the mechanical brakes. The massive kinetic energy will likely exceed their thermal and shear limits, causing brake fade, structural distortion, or mechanical failure. A controlled Category 1 stop is required.
+* **Kinematic Boundary Saturation:** Relying on a fixed damping factor of lambda = 0.01 for the pseudoinverse Jacobian is highly dangerous near deep singularities. If the manipulator approaches a boundary, this arbitrary value can fail to cap joint velocities, causing violent, uncommanded joint acceleration that violates the 6th-degree polynomial jerk limits.
+* **Architecture Integrity Risk (ISO 13849-1):** Wiring primary contactors as Normally Open (NO) is standard, but relying on "decentralized" hardware safety relays lacks the required rigor for industrial robotics. To meet PLd/PLe requirements, the system must utilize dual-channel safety relays with cross-monitoring; otherwise, a single welded relay contact will defeat the entire E-stop chain.
+* **EtherCAT Communication Watchdog Gap:** Relying purely on physical circuit interruption for a cut communication cable ignores digital fieldbus realities. If the handheld device loses connection, the EtherCAT master must enforce a strict watchdog timeout (typically < 10ms) to transition the state machine to a safe state, preventing the robot from executing a "frozen" last-commanded trajectory before the mechanical relay drops out.
+
+---
+
 ## 🤔 ISO/IEC Codes and Violations
 Here are brief, concise definitions of the stated standards to provide context for the audit:
 * **ISO 10218-1 & -2 (Robots and Robotic Devices):** The definitive safety standards for industrial robots (-1) and integrated robot systems (-2). They dictate mandatory safeguards, including the maximum allowable speed of ≤ 250mm/s for human-robot interaction in manual/teach modes.
