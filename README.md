@@ -112,7 +112,6 @@ Apart from this, through further AI assisted analysis, the following ISO/IEC vio
 * **Redesign to Stop Category 1 (SS1):** Reconfigure the emergency stop logic to a controlled Category 1 stop according to ISO 13850. The servo drives must actively use regenerative dynamic braking to bring the manipulator to a controlled, rapid stop before the mechanical brakes engage and power is cut.
 * **Upgrade to a Safety-PLC with Cross-Monitoring:** Replace the decentralized relays with a centralized, dual-channel Safety PLC or a safety-certified network master. Ensure all safety-critical inputs (E-stops, enabling switches) and outputs (primary contactors) utilize a feedback loop for dynamic cross-monitoring to achieve PLd/PLe compliance per ISO 13849-1.
 * **Deploy FailSafe over EtherCAT (FSoE):** Implement the FSoE (IEC 61784-3-3) protocol for the handheld operating device. Configure an FSoE watchdog timer limit of ≤ 10ms; if a frame is missed or the cable is cut, the master immediately triggers a safe state transition before communication falls out.
-* **Upgrade to an Adaptive Singularity Damping Algorithm:** Replace the static damping factor with a dynamic Levenberg-Marquardt tracking algorithm. The damping factor must adjust dynamically based on the manipulability measure (w), ensuring that lambda increases proportionally as the manipulator approaches a singularity boundary:
 
 ---
 
