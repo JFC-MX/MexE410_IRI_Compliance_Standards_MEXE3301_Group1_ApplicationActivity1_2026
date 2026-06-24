@@ -117,4 +117,14 @@ Apart from this, through further AI assisted analysis, the following ISO/IEC vio
 
 ## Conclusion
 
-(dito lagay conclusion)
+
+
+In conclusion, the translation inspection revealed significant safety defects in the documentation of the 6DOF welding system. In the original design, the main servomotor contacts were wired in the normal closed configuration (NC) to ensure safety in emergency situations such as power failures and communications. However, the translated version that our professor incorrectly interpreted it as a normal open configuration (NO) fundamentally changed the intended security mechanism. If this error is not noticed, operators performing manual instructions and readjusting T1 can be exposed to serious or fatal risks. The wrong wiring logic prevents the reliable isolation of power and brake activation, while the robot can continue working at 1.5 m/s production speed. Because brakes are likely to be overloaded, unstable near kinetic differences, lack of adequate communication surveillance protection, damage, equipment destruction, long-term interruptions, regulatory violations, and significant legal consequences can occur.
+
+The situation emphasizes that translating technical documentation is more than a language exercise; it is an important technical and safety function. In mechanical systems, a seemingly small term associated with relay configurations, safety circuits, speed limits and control parameters directly determines whether the machine behaves correctly under fault conditions. Consequently, comprehensive QA audits are essential to verify the accuracy of translated documents and maintain the original engineering intent. By carefully assessing safety logic, control system behaviour and compliance with standards, organizations can avoid dangerous implementation errors and ensure safe, reliable and compliance throughout the system lifecycle. 
+
+
+
+
+
+
