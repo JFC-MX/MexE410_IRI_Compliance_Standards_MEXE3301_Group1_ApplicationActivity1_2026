@@ -74,7 +74,7 @@ German industrial automation standards demand that component failures cause imme
 
 <ins>Gemini Answer Using Translation From Google:</ins>
 
-## Mechatronics QA Audit Report
+### Mechatronics QA Audit Report
 * **Critical ISO 10218-1 Non-Compliance (T1 Speed Limit):** The procedure does not state that the TCP speed is hardware-clamped to ≤ 250mm/s during T1 manual teach mode. Allowing the manipulator to potentially move at its 1.5 m/s production speed while a human operator is in the envelope is a severe safety violation.
 * **Thermal Brake Overload & Catastrophic Shear (ISO 13850):** Implementing an uncontrolled Category 0 stop (immediate de-energization) at a high TCP speed of 1.5 m/s on a heavy industrial manipulator will violently abuse the mechanical brakes. The massive kinetic energy will likely exceed their thermal and shear limits, causing brake fade, structural distortion, or mechanical failure. A controlled Category 1 stop is required.
 * **Kinematic Boundary Saturation:** Relying on a fixed damping factor of lambda = 0.01 for the pseudoinverse Jacobian is highly dangerous near deep singularities. If the manipulator approaches a boundary, this arbitrary value can fail to cap joint velocities, causing violent, uncommanded joint acceleration that violates the 6th-degree polynomial jerk limits.
@@ -86,7 +86,7 @@ German industrial automation standards demand that component failures cause imme
 
 <ins>Gemini ANALYSIS FROM MOST PRECISE ANSWER: </ins>
 
-## Engineering Logic Errors & ISO/IEC Violations
+### Engineering Logic Errors & ISO/IEC Violations
 * **ISO 10218-1 & ISO 10218-2 Violation (T1 Speed Cap):** The engineering logic relies entirely on software override for T1 mode without enforcing a hard, safety-rated speed limit. In manual mode, the TCP speed must be strictly restricted to ≤ 250mm/s via safety-rated monitored speed circuits.
 * **ISO 13850 Violation (Emergency Stop Category):** The system mandates an immediate Category 0 stop (uncontrolled cut of power) at a high production speed of 1.5 m/s. This represents a thermal and mechanical logic error: the instant engagement of mechanical brakes at peak kinetic energy can exceed their thermal/shear limits, causing brake fade, structural damage, and extended stopping distances.
 * **ISO 13849-1 Violation (Performance Level/Architecture):** The logic assumes "decentralized hardware safety relays" provide sufficient safety coverage. For a heavy industrial manipulator, the architecture must achieve Performance Level d or e (PLd/PLe), Category 3 or 4, which strictly requires dual-channel redundancy and continuous cross-monitoring to prevent single-point hardware failure (e.g., a welded relay contact).
