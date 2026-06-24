@@ -71,12 +71,12 @@ German industrial automation standards demand that component failures cause imme
 
 To complete the quality assurance, the following prompts were utilized.
 
-### **INTERROGATION:**
+### **🗣 INTERROGATION:**
 *Prompt: Act as a Mechatronics QA Auditor. Analyze this translated procedure. Does the mechanical logic ensure physical safety and comply with ISO standards? Flag any relay states, kinematic bounds, or thermal limits that could cause a catastrophic failure. Present your findings in a maximum of 5 concise bullet points.*
 
 <ins>Gemini Answer Using Translation From Google was used</ins>
 
-### **ISOLATION:**
+### **🫸 ISOLATION:**
 *Prompt: Based on your previous analysis, pinpoint the exact engineering logic error and identify any specific ISO/IEC standard violations. List these specific errors in a maximum of 5 concise bullet points. Then, provide the necessary engineering corrections to resolve these hazards and ensure compliance, also formatted as a maximum of 5 concise bullet points.*
 
 <ins>Gemini analysis from most precise answer was utilized </ins>
